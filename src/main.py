@@ -1,20 +1,28 @@
 def pairs_of_tribes(pairs):
-    boys = set()
-    girls = set()
+    tribe_boys = {}
+    tribe_girls = {}
     count = 0
 
-    for pair in pairs[1:]:
-        boy, girl = pair
-        if boy % 2 == 1:
-            boys.add(boy)
-        if girl % 2 == 0:
-            girls.add(girl)
+    for tribe in pairs[1:]:
+        tribe_id = tribe[0]
+        boys = tribe[1::2]
+        girls = tribe[2::2]
 
-    count = len(boys) * len(girls)
+        if tribe_id not in tribe_boys:
+            tribe_boys[tribe_id] = set()
+        if tribe_id not in tribe_girls:
+            tribe_girls[tribe_id] = set()
+
+        tribe_boys[tribe_id].update(set(boys))
+        tribe_girls[tribe_id].update(set(girls))
+
+    for boys_set in tribe_boys.values():
+        for girls_set in tribe_girls.values():
+            count += len(boys_set) * len(girls_set)
+
     return count
 
-
-pairs = [[3], [1, 2], [2, 4], [3, 5]]
+pairs = [[3], [1, 2], [2, 3], [3, 4]]
 
 result = pairs_of_tribes(pairs)
 
